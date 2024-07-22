@@ -10,6 +10,8 @@ import com.baranbatur.newMotherHelper.repository.CategoryRepo;
 import com.baranbatur.newMotherHelper.service.abstracts.ICategoryService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,9 +45,9 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    @Cacheable(value = "categories")
     public List<CategoryResponse> getAllCategories() {
         List<Category> categories = this.categoryRepo.findAll();
-        System.out.println("kategoriler burada" + categories);
         if (categories.isEmpty()) {
             throw new NotFoundException("No categories found");
         }
@@ -57,11 +59,12 @@ public class CategoryServiceImpl implements ICategoryService {
         return this.categoryRepo.findById(id).map(categoryResponseGenericConverter::convertToDto).orElseThrow(() -> new NotFoundException("Category not found"));
     }
 
+
     @Override
     @Transactional
+    @CacheEvict(value = "categories", allEntries = true)
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         Category category = categoryRequestGenericConverter.convertToEntity(categoryRequest);
         return categoryResponseGenericConverter.convertToDto(this.categoryRepo.save(category));
     }
-
 }
