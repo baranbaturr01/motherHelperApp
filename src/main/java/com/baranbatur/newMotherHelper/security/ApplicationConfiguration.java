@@ -1,4 +1,4 @@
-package com.baranbatur.newMotherHelper.config;
+package com.baranbatur.newMotherHelper.security;
 
 import com.baranbatur.newMotherHelper.repository.UserRepo;
 import org.springframework.context.annotation.Bean;

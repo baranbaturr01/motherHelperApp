@@ -2,6 +2,8 @@ package com.baranbatur.newMotherHelper.service.concrete;
 
 import com.baranbatur.newMotherHelper.converter.GenericConverter;
 import com.baranbatur.newMotherHelper.dto.CategoryDto;
+import com.baranbatur.newMotherHelper.dto.requests.category.CategoryRequest;
+import com.baranbatur.newMotherHelper.dto.response.category.CategoryResponse;
 import com.baranbatur.newMotherHelper.exception.NotFoundException;
 import com.baranbatur.newMotherHelper.model.Category;
 import com.baranbatur.newMotherHelper.repository.CategoryRepo;
@@ -17,35 +19,49 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements ICategoryService {
 
     private final CategoryRepo categoryRepo;
-    private final GenericConverter<Category, CategoryDto> categoryConverter;
+    private final GenericConverter<Category, CategoryRequest> categoryRequestGenericConverter;
+    private final GenericConverter<Category, CategoryResponse> categoryResponseGenericConverter;
 
     @Autowired
     public CategoryServiceImpl(CategoryRepo categoryRepo) {
         this.categoryRepo = categoryRepo;
-        this.categoryConverter = new GenericConverter<>(category -> new CategoryDto(category.getId(), category.getName(), category.getDescription()), categoryDto -> {
+
+        this.categoryRequestGenericConverter = new GenericConverter<>(categoryRequest -> new CategoryRequest(categoryRequest.getName(), categoryRequest.getDescription()), categoryRequest -> {
             Category category = new Category();
-            category.setId(categoryDto.id());
-            category.setName(categoryDto.name());
-            category.setDescription(categoryDto.description());
+            category.setName(categoryRequest.name());
+            category.setDescription(categoryRequest.description());
+            return category;
+        });
+
+        this.categoryResponseGenericConverter = new GenericConverter<>(categoryResponse -> new CategoryResponse(categoryResponse.getId(), categoryResponse.getName(), categoryResponse.getDescription()), categoryResponse -> {
+            Category category = new Category();
+            category.setId(categoryResponse.id());
+            category.setName(categoryResponse.name());
+            category.setDescription(categoryResponse.description());
             return category;
         });
     }
 
     @Override
-    public List<CategoryDto> getAllCategories() {
-        return this.categoryRepo.findAll().stream().map(categoryConverter::convertToDto).collect(Collectors.toList());
+    public List<CategoryResponse> getAllCategories() {
+        List<Category> categories = this.categoryRepo.findAll();
+        System.out.println("kategoriler burada" + categories);
+        if (categories.isEmpty()) {
+            throw new NotFoundException("No categories found");
+        }
+        return categories.stream().map(categoryResponseGenericConverter::convertToDto).collect(Collectors.toList());
     }
 
     @Override
-    public CategoryDto getCategoryById(Integer id) {
-        return this.categoryRepo.findById(id).map(categoryConverter::convertToDto).orElseThrow(() -> new NotFoundException("Category not found"));
+    public CategoryResponse getCategoryById(Integer id) {
+        return this.categoryRepo.findById(id).map(categoryResponseGenericConverter::convertToDto).orElseThrow(() -> new NotFoundException("Category not found"));
     }
 
     @Override
     @Transactional
-    public CategoryDto createCategory(CategoryDto categoryDto) {
-        Category category = categoryConverter.convertToEntity(categoryDto);
-        return categoryConverter.convertToDto(this.categoryRepo.save(category));
+    public CategoryResponse createCategory(CategoryRequest categoryRequest) {
+        Category category = categoryRequestGenericConverter.convertToEntity(categoryRequest);
+        return categoryResponseGenericConverter.convertToDto(this.categoryRepo.save(category));
     }
 
 }

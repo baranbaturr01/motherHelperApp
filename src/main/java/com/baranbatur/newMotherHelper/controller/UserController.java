@@ -4,6 +4,7 @@ import com.baranbatur.newMotherHelper.dto.requests.LoginRequest;
 import com.baranbatur.newMotherHelper.dto.requests.RegisterRequest;
 import com.baranbatur.newMotherHelper.dto.response.LoginResponse;
 import com.baranbatur.newMotherHelper.dto.response.RegisterResponse;
+import com.baranbatur.newMotherHelper.helper.ApiResponse;
 import com.baranbatur.newMotherHelper.service.abstracts.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,13 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        return userService.login(request);
+    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest request) {
+        return new ApiResponse<>(true, userService.login(request));
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public RegisterResponse register(@RequestBody RegisterRequest request) {
-        return userService.register(request);
+    public ApiResponse<RegisterResponse> register(@RequestBody RegisterRequest request) {
+        return new ApiResponse<>(true, userService.register(request));
     }
 }

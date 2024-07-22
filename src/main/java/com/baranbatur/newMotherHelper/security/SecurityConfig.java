@@ -1,4 +1,4 @@
-package com.baranbatur.newMotherHelper.config;
+package com.baranbatur.newMotherHelper.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,10 +37,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(x -> x.requestMatchers("/api/v1/**").permitAll())
-                .authorizeHttpRequests(x ->
-                        x.requestMatchers("/api/v1/**").authenticated()
-                                .requestMatchers("/api/v1/").hasAnyRole("ADMIN", "USER")
+                .authorizeHttpRequests(auth -> auth.
+                        requestMatchers("/api/v1/user/login").permitAll().
+                        requestMatchers("/api/v1/user/register").permitAll().
+                        requestMatchers("/api/v1/**").authenticated()
                 )
                 .sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(applicationConfiguration.authenticationProvider())

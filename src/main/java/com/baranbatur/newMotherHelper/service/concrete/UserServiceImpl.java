@@ -71,14 +71,13 @@ public class UserServiceImpl implements IUserService {
         if (user.isEmpty()) {
             throw new RuntimeException("User not found");
         }
-        User user1 = user.get();
-        System.out.println("USER BNRADA HA " + loginRequest.password());
+        User newUser = user.get();
 
-        if (!passwordEncoder.matches(loginRequest.password(), user1.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.password(), newUser.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwtService.generateToken(user1);
+        String token = jwtService.generateToken(newUser);
         return new LoginResponse(token);
     }
 

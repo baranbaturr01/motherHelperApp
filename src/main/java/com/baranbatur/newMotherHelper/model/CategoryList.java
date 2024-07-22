@@ -1,7 +1,7 @@
 package com.baranbatur.newMotherHelper.model;
 
 import jakarta.persistence.*;
-
+//Bir kategorinin içinde bulunan alınması gereken öğeleri içeren sınıf.
 
 @Entity
 @Table(name = "category_list")
