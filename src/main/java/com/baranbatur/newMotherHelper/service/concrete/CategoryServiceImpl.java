@@ -24,7 +24,6 @@ public class CategoryServiceImpl implements ICategoryService {
     private final GenericConverter<Category, CategoryRequest> categoryRequestGenericConverter;
     private final GenericConverter<Category, CategoryResponse> categoryResponseGenericConverter;
 
-    @Autowired
     public CategoryServiceImpl(CategoryRepo categoryRepo) {
         this.categoryRepo = categoryRepo;
 
@@ -34,6 +33,7 @@ public class CategoryServiceImpl implements ICategoryService {
             category.setDescription(categoryRequest.description());
             return category;
         });
+        //todo:mapper bak!
 
         this.categoryResponseGenericConverter = new GenericConverter<>(categoryResponse -> new CategoryResponse(categoryResponse.getId(), categoryResponse.getName(), categoryResponse.getDescription()), categoryResponse -> {
             Category category = new Category();

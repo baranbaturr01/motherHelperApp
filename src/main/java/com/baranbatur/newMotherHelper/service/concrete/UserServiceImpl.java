@@ -48,12 +48,12 @@ public class UserServiceImpl implements IUserService {
         });
         this.registerRequestConverter = new GenericConverter<>(user -> new RegisterRequest(user.getName(), user.getSurname(), user.getEmail(), user.getPassword(), user.getGender(), role), request -> {
             User user = new User();
-            user.setName(request.name());
-            user.setSurname(request.surname());
-            user.setPassword(request.password());
-            user.setEmail(request.email());
-            user.setGender(request.gender());
-            user.setRole(request.role());
+            user.setName(request.getName());
+            user.setSurname(request.getSurname());
+            user.setPassword(request.getPassword());
+            user.setEmail(request.getEmail());
+            user.setGender(request.getGender());
+            user.setRole(request.getRole());
             return user;
         });
         this.registerResponseConverter = new GenericConverter<>(user -> new RegisterResponse(user.getName(), user.getSurname(), user.getEmail(), user.getGender(), null), response -> {
@@ -84,7 +84,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public RegisterResponse register(RegisterRequest registerRequest) {
         User user = registerRequestConverter.convertToEntity(registerRequest);
-        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user = userRepository.save(user);
         var token = jwtService.generateToken(user);
         RegisterResponse response = registerResponseConverter.convertToDto(user);

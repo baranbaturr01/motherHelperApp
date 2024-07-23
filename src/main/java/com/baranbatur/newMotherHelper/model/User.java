@@ -22,6 +22,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
+
+    //    todo:hibernate enum converter buna bak
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
