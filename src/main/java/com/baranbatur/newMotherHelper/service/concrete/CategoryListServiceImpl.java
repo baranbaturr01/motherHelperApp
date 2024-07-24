@@ -42,10 +42,10 @@ public class CategoryListServiceImpl implements ICategoryListService {
             return categoryList;
         });
 
-        this.categoryListResponseGenericConverter = new GenericConverter<>(categoryList -> new CategoryListResponse(categoryList.getId(), categoryList.getItemName()), categoryListResponse -> {
+        this.categoryListResponseGenericConverter = new GenericConverter<>(categoryList -> new CategoryListResponse(categoryList.getId(), categoryList.getItemName(), categoryList.getCategory().getId(), categoryList.getCategory().getName()), categoryListResponse -> {
             CategoryList categoryList = new CategoryList();
-            categoryList.setId(categoryListResponse.id());
-            categoryList.setItemName(categoryListResponse.itemName());
+            categoryList.setId(categoryListResponse.getId());
+            categoryList.setItemName(categoryListResponse.getItemName());
             return categoryList;
         });
     }
@@ -76,6 +76,6 @@ public class CategoryListServiceImpl implements ICategoryListService {
         if (categoryLists.isEmpty()) throw new NotFoundException("Category list not found");
         Category category = categoryRepo.findById(categoryId).orElseThrow(() -> new NotFoundException("Category not found"));
         List<CategoryList> categoryList = categoryLists.stream().toList();
-        return categoryList.stream().map(categoryList1 -> new CategoryListResponse(categoryList1.getId(), categoryList1.getItemName())).collect(Collectors.toList());
+        return categoryList.stream().map(categoryList1 -> new CategoryListResponse(categoryList1.getId(), categoryList1.getItemName(), categoryList1.getCategory().getId(), categoryList1.getCategory().getName())).collect(Collectors.toList());
     }
 }
