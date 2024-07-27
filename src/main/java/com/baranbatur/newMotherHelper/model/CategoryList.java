@@ -11,7 +11,7 @@ public class CategoryList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String itemName;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(  cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
