@@ -13,7 +13,7 @@ public interface ICategoryListService {
 
     CategoryListResponse createCategoryList(CategoryListRequest categoryListRequest);
 
-    List<CategoryListResponse> getCategoryListByCategoryId(Integer categoryId);
+    List<CategoryListResponse> getCategoryListByCategoryId(Integer categoryId, Integer userId);
 
 
 }

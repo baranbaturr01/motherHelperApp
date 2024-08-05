@@ -1,17 +1,18 @@
 package com.baranbatur.newMotherHelper.dto.response.categoryList;
 
+import com.baranbatur.newMotherHelper.model.Category;
+
 public class CategoryListResponse {
 
     private Integer id;
     private String itemName;
-    private Integer categoryId;
-    private String categoryName;
 
-    public CategoryListResponse(Integer id, String itemName, Integer categoryId, String categoryName) {
+    private boolean isAdded;
+
+    public CategoryListResponse(Integer id, String itemName, boolean isAdded) {
         this.id = id;
         this.itemName = itemName;
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
+        this.isAdded = isAdded;
     }
 
     public Integer getId() {
@@ -30,19 +31,12 @@ public class CategoryListResponse {
         this.itemName = itemName;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public void setIs_added(boolean is_added) {
+        this.isAdded = is_added;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public boolean isIs_added() {
+        return isAdded;
     }
 
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 }

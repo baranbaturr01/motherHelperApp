@@ -3,6 +3,7 @@ package com.baranbatur.newMotherHelper.controller;
 import com.baranbatur.newMotherHelper.dto.requests.categoryList.CategoryListRequest;
 import com.baranbatur.newMotherHelper.dto.response.categoryList.CategoryListResponse;
 import com.baranbatur.newMotherHelper.helper.ApiResponse;
+import com.baranbatur.newMotherHelper.helper.CategoryListWrapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface CategoryListController {
 
 
     @GetMapping("/find-by-category-id")
-    public ApiResponse<List<CategoryListResponse>> findByCategoryId(@RequestParam Integer categoryId);
+    public ApiResponse<CategoryListWrapper> findByCategoryId(@RequestParam Integer categoryId, @RequestHeader("Authorization") String token);
 
     @PostMapping
     public ApiResponse<CategoryListResponse> save(@RequestBody CategoryListRequest categoryListRequest);

@@ -11,12 +11,14 @@ public class UserCategoryList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "category_list_id")
+    @JoinColumn(name = "category_list_id", nullable = false)
     private CategoryList categoryList;
+
+    private boolean isAdded = false;
 
     public UserCategoryList(Integer id, User user, CategoryList categoryList) {
         this.id = id;
@@ -49,5 +51,13 @@ public class UserCategoryList {
 
     public void setCategoryList(CategoryList categoryList) {
         this.categoryList = categoryList;
+    }
+
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
     }
 }

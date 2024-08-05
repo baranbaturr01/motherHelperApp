@@ -108,6 +108,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>new-mother-helper</finalName>
     </build>
 
 </project>

@@ -11,4 +11,6 @@ public interface IUserService {
 
     RegisterResponse register(RegisterRequest registerRequest);
 
+    Integer getUserIdFromToken(String token);
+
 }

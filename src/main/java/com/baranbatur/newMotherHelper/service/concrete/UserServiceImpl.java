@@ -11,6 +11,7 @@ import com.baranbatur.newMotherHelper.repository.UserRepo;
 import com.baranbatur.newMotherHelper.service.JwtService;
 import com.baranbatur.newMotherHelper.service.abstracts.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -89,5 +90,15 @@ public class UserServiceImpl implements IUserService {
         var token = jwtService.generateToken(user);
         RegisterResponse response = registerResponseConverter.convertToDto(user);
         return new RegisterResponse(response.name(), response.surname(), response.email(), response.gender(), token);
+    }
+
+    @Override
+    public Integer getUserIdFromToken(String token) {
+        String email = jwtService.extractUsername(token);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        return user.getId();
     }
 }
