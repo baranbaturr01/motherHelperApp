@@ -21,13 +21,13 @@ public class UserCategoryListControllerImpl implements UserCategoryListControlle
     }
 
     @Override
-    public ApiResponse<List<UserCategoryListResponse>> findAll(String token) {
-        return new ApiResponse<>(true, userCategoryListService.getUserCategoryList(token));
+    public ApiResponse<List<UserCategoryListResponse>> findAll(Integer userId) {
+        return new ApiResponse<>(true, userCategoryListService.getUserCategoryList(userId));
     }
 
     @Override
-    public ApiResponse<UserCategoryListResponse> save(UserCategoryListRequest userCategoryListRequest, String token) {
+    public ApiResponse<UserCategoryListResponse> save(UserCategoryListRequest userCategoryListRequest, Integer userId) {
 
-        return new ApiResponse<>(true, userCategoryListService.save(userCategoryListRequest, token));
+        return new ApiResponse<>(true, userCategoryListService.save(userCategoryListRequest, userId));
     }
 }

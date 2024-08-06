@@ -42,15 +42,14 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
         this.categoryListService = categoryListService;
         this.userRepo = userRepo;
         this.userService = userService;
-        this.userCategoryListGeneric = new com.baranbatur.newMotherHelper.converter.GenericConverter<>(userCategoryList -> new UserCategoryListDto(userCategoryList.getId(), userCategoryList.getUser(), userCategoryList.getCategoryList()),
-                userCategoryListDto -> {
-                    UserCategoryList userCategoryList = new UserCategoryList();
-                    userCategoryList.setId(userCategoryListDto.id());
-                    userCategoryList.setUser(userCategoryListDto.user());
-                    userCategoryList.setCategoryList(userCategoryListDto.categoryList());
-                    return userCategoryList;
+        this.userCategoryListGeneric = new com.baranbatur.newMotherHelper.converter.GenericConverter<>(userCategoryList -> new UserCategoryListDto(userCategoryList.getId(), userCategoryList.getUser(), userCategoryList.getCategoryList()), userCategoryListDto -> {
+            UserCategoryList userCategoryList = new UserCategoryList();
+            userCategoryList.setId(userCategoryListDto.id());
+            userCategoryList.setUser(userCategoryListDto.user());
+            userCategoryList.setCategoryList(userCategoryListDto.categoryList());
+            return userCategoryList;
 
-                });
+        });
     }
 
     @Override
@@ -75,21 +74,12 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
     }
 
     @Override
-    public List<UserCategoryListResponse> getUserCategoryList(String token) {
-        String token2 = token.substring(7);
-        Integer userId = userService.getUserIdFromToken(token2);
+    public List<UserCategoryListResponse> getUserCategoryList(Integer userId) {
         List<UserCategoryList> userCategoryLists = userCategoryListRepo.findByUserId(userId);
-        return userCategoryLists.stream()
-                .map(userCategoryList -> new UserCategoryListResponse(
-                        userCategoryList.getCategoryList().getId(),
-                        userCategoryList.getCategoryList().getItemName(),
-                        userCategoryList.isAdded()))
-                .collect(Collectors.toList());
+        return userCategoryLists.stream().map(userCategoryList -> new UserCategoryListResponse(userCategoryList.getCategoryList().getId(), userCategoryList.getCategoryList().getItemName(), userCategoryList.isAdded())).collect(Collectors.toList());
     }
 
-    public UserCategoryListResponse save(UserCategoryListRequest userCategoryListRequest, String token) {
-        String token2 = token.substring(7);
-        Integer userId = userService.getUserIdFromToken(token2);
+    public UserCategoryListResponse save(UserCategoryListRequest userCategoryListRequest, Integer userId) {
         User user = userRepo.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
         CategoryListDto categoryList = categoryListService.getCategoryListById(userCategoryListRequest.categoryListId());
         CategoryList categoryList1 = new CategoryList();

@@ -17,9 +17,9 @@ public interface IUserCategoryListService {
 
     void deleteUserFromCategoryList(Integer userId);
 
-    List<UserCategoryListResponse> getUserCategoryList(String token);
+    List<UserCategoryListResponse> getUserCategoryList(Integer userId);
 
-    UserCategoryListResponse save(UserCategoryListRequest userCategoryListRequest, String token);
+    UserCategoryListResponse save(UserCategoryListRequest userCategoryListRequest, Integer userId);
 
 
 }

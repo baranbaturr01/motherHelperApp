@@ -13,8 +13,8 @@ public interface UserCategoryListController {
 
 
     @GetMapping("")
-    ApiResponse<List<UserCategoryListResponse>> findAll(@RequestHeader("Authorization") String token);
+    ApiResponse<List<UserCategoryListResponse>> findAll(@RequestAttribute("userId") Integer userId);
 
     @PostMapping("")
-    ApiResponse<UserCategoryListResponse> save(@RequestBody UserCategoryListRequest userCategoryListRequest, @RequestHeader("Authorization") String token);
+    ApiResponse<UserCategoryListResponse> save(@RequestBody UserCategoryListRequest userCategoryListRequest, @RequestAttribute("userId") Integer userId);
 }
