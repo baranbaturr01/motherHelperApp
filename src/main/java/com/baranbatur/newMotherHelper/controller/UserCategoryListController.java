@@ -17,4 +17,8 @@ public interface UserCategoryListController {
 
     @PostMapping("")
     ApiResponse<UserCategoryListResponse> save(@RequestBody UserCategoryListRequest userCategoryListRequest, @RequestAttribute("userId") Integer userId);
+
+
+    @DeleteMapping("/{id}")
+    ApiResponse<Boolean> delete(@PathVariable Integer id);
 }

@@ -30,4 +30,10 @@ public class UserCategoryListControllerImpl implements UserCategoryListControlle
 
         return new ApiResponse<>(true, userCategoryListService.save(userCategoryListRequest, userId));
     }
+
+    @Override
+    public ApiResponse<Boolean> delete(Integer id) {
+
+        return new ApiResponse<>(true, userCategoryListService.delete(id));
+    }
 }

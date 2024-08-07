@@ -53,27 +53,6 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
     }
 
     @Override
-    public List<UserCategoryListDto> getAllUserCategoryLists() {
-
-        return this.userCategoryListRepo.findAll().stream().map(userCategoryListGeneric::convertToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public UserCategoryListDto getUserCategoryListById(Integer id) {
-        return this.userCategoryListRepo.findById(id).map(userCategoryListGeneric::convertToDto).orElseThrow(() -> new NotFoundException("User category list not found"));
-    }
-
-    @Override
-    public void addUserToCategoryList(Integer userId, Integer categoryListId) {
-//        TODO:Devam edilecek
-    }
-
-    @Override
-    public void deleteUserFromCategoryList(Integer userId) {
-//TODO:Yapılacak
-    }
-
-    @Override
     public List<UserCategoryListResponse> getUserCategoryList(Integer userId) {
         List<UserCategoryList> userCategoryLists = userCategoryListRepo.findByUserId(userId);
         return userCategoryLists.stream().map(userCategoryList -> new UserCategoryListResponse(userCategoryList.getCategoryList().getId(), userCategoryList.getCategoryList().getItemName(), userCategoryList.isAdded())).collect(Collectors.toList());
@@ -92,5 +71,12 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
         userCategoryList.setAdded(true);
         userCategoryListRepo.save(userCategoryList);
         return new UserCategoryListResponse(userCategoryListRequest.categoryListId(), categoryList1.getItemName(), true);
+    }
+
+
+    @Override
+    public Boolean delete(Integer id) {
+        userCategoryListRepo.deleteById(id);
+        return true;
     }
 }
