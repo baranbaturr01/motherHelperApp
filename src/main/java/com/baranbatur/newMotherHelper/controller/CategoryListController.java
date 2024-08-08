@@ -13,7 +13,7 @@ public interface CategoryListController {
 
 
     @GetMapping("/find-by-category-id")
-    public ApiResponse<CategoryListWrapper> findByCategoryId(@RequestParam Integer categoryId, @RequestHeader("Authorization") String token);
+    public ApiResponse<CategoryListWrapper> findByCategoryId(@RequestParam Integer categoryId, @RequestAttribute("userId") Integer userId);
 
     @PostMapping
     public ApiResponse<CategoryListResponse> save(@RequestBody CategoryListRequest categoryListRequest);

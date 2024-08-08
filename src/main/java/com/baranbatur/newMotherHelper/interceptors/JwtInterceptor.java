@@ -10,9 +10,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
 
+    @Autowired
     public JwtInterceptor(IUserService userService) {
         this.userService = userService;
     }

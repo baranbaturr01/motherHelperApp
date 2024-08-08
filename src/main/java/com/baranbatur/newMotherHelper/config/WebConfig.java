@@ -16,5 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry register) {
         register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/user-category-list");
         register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/user-category-list/*");
+        register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/category-list/find-by-category-id");
     }
 }
