@@ -47,7 +47,7 @@ public class CategoryListServiceImpl implements ICategoryListService {
             return categoryList;
         });
 
-        this.categoryListResponseGenericConverter = new GenericConverter<>(categoryList -> new CategoryListResponse(categoryList.getId(), categoryList.getItemName(), categoryList.isIs_added()), categoryListResponse -> {
+        this.categoryListResponseGenericConverter = new GenericConverter<>(categoryList -> new CategoryListResponse(categoryList.getId(), categoryList.getItemName()), categoryListResponse -> {
             CategoryList categoryList = new CategoryList();
             categoryList.setId(categoryListResponse.getId());
             categoryList.setItemName(categoryListResponse.getItemName());
@@ -82,7 +82,7 @@ public class CategoryListServiceImpl implements ICategoryListService {
         return categoryLists.stream().map(categoryList -> {
             boolean isAdded = userCategoryListRepo.findByUserIdAndCategoryListId(userId, categoryList.getId()).map(UserCategoryList::isAdded).orElse(false);
 
-            return new CategoryListResponse(categoryList.getId(), categoryList.getItemName(), isAdded);
+            return new CategoryListResponse(categoryList.getId(), categoryList.getItemName());
         }).collect(Collectors.toList());
 
     }

@@ -7,12 +7,10 @@ public class CategoryListResponse {
     private Integer id;
     private String itemName;
 
-    private boolean isAdded;
 
-    public CategoryListResponse(Integer id, String itemName, boolean isAdded) {
+    public CategoryListResponse(Integer id, String itemName) {
         this.id = id;
         this.itemName = itemName;
-        this.isAdded = isAdded;
     }
 
     public Integer getId() {
@@ -31,12 +29,5 @@ public class CategoryListResponse {
         this.itemName = itemName;
     }
 
-    public void setIs_added(boolean is_added) {
-        this.isAdded = is_added;
-    }
-
-    public boolean isIs_added() {
-        return isAdded;
-    }
 
 }
