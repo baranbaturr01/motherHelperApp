@@ -13,14 +13,17 @@ public class CategoryList {
     private Integer id;
     private String itemName;
     private boolean is_added = false;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
+
+    private String iconUrl;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public CategoryList(String itemName, Category category, boolean is_added) {
+    public CategoryList(String itemName, Category category, String iconUrl, boolean is_added) {
         this.itemName = itemName;
         this.category = category;
         this.is_added = is_added;
+        this.iconUrl = iconUrl;
     }
 
     public CategoryList() {
@@ -50,6 +53,14 @@ public class CategoryList {
         this.category = category;
     }
 
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
     public boolean isIs_added() {
         return is_added;
     }
@@ -57,4 +68,5 @@ public class CategoryList {
     public void setIs_added(boolean is_added) {
         this.is_added = is_added;
     }
+
 }

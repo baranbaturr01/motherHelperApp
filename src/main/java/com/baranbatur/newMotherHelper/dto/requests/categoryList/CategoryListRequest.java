@@ -1,6 +1,6 @@
 package com.baranbatur.newMotherHelper.dto.requests.categoryList;
 
-import com.baranbatur.newMotherHelper.model.Category;
+import org.springframework.web.multipart.MultipartFile;
 
-public record CategoryListRequest(String itemName, Integer categoryId) {
+public record CategoryListRequest(String itemName, Integer categoryId, MultipartFile icon) {
 }

@@ -8,6 +8,7 @@ import com.baranbatur.newMotherHelper.helper.ApiResponse;
 import com.baranbatur.newMotherHelper.helper.CategoryListWrapper;
 import com.baranbatur.newMotherHelper.service.abstracts.ICategoryListService;
 import com.baranbatur.newMotherHelper.service.abstracts.ICategoryService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +45,7 @@ public class CategoryListControllerImpl implements CategoryListController {
 
 
     @Override
-    public ApiResponse<CategoryListResponse> save(CategoryListRequest categoryListRequest) {
+    public ApiResponse<CategoryListResponse> save(CategoryListRequest categoryListRequest) throws BadRequestException {
         return new ApiResponse<>(true, categoryListService.createCategoryList(categoryListRequest));
     }
 

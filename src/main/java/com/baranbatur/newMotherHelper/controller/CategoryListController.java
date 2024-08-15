@@ -4,6 +4,7 @@ import com.baranbatur.newMotherHelper.dto.requests.categoryList.CategoryListRequ
 import com.baranbatur.newMotherHelper.dto.response.categoryList.CategoryListResponse;
 import com.baranbatur.newMotherHelper.helper.ApiResponse;
 import com.baranbatur.newMotherHelper.helper.CategoryListWrapper;
+import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface CategoryListController {
     public ApiResponse<CategoryListWrapper> findByCategoryId(@RequestParam Integer categoryId, @RequestAttribute("userId") Integer userId);
 
     @PostMapping
-    public ApiResponse<CategoryListResponse> save(@RequestBody CategoryListRequest categoryListRequest);
+    public ApiResponse<CategoryListResponse> save(@ModelAttribute CategoryListRequest categoryListRequest) throws BadRequestException;
 }
