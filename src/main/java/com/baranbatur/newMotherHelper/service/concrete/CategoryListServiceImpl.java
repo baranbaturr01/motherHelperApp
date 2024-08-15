@@ -45,7 +45,7 @@ public class CategoryListServiceImpl implements ICategoryListService {
         this.fileStorageService = fileStorageService;
         this.categoryRepo = categoryRepo;
         this.categoryListConverter = new GenericConverter<>(categoryList -> //bu entity sınıfı
-                new CategoryListDto(categoryList.getId(), categoryList.getItemName(), categoryList.getCategory()), categoryListDto -> {
+                new CategoryListDto(categoryList.getId(), categoryList.getItemName(), categoryList.getIconUrl(), categoryList.getCategory()), categoryListDto -> {
             CategoryList categoryList = new CategoryList();
             categoryList.setId(categoryListDto.id());
             categoryList.setItemName(categoryListDto.itemName());

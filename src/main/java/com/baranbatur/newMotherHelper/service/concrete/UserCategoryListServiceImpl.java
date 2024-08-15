@@ -15,6 +15,7 @@ import com.baranbatur.newMotherHelper.service.abstracts.ICategoryListService;
 import com.baranbatur.newMotherHelper.service.abstracts.IUserCategoryListService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +29,13 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
     private final UserRepo userRepo;
     private final ICategoryListService categoryListService;
     private final GenericConverter<UserCategoryList, UserCategoryListDto> userCategoryListGeneric;
+    private final String baseUrl;
 
-    @Autowired
-    public UserCategoryListServiceImpl(UserCategoryListRepo userCategoryListRepo, UserRepo userRepo, ICategoryListService categoryListService) {
+    public UserCategoryListServiceImpl(UserCategoryListRepo userCategoryListRepo, UserRepo userRepo, ICategoryListService categoryListService, String baseUrl) {
         this.userCategoryListRepo = userCategoryListRepo;
         this.categoryListService = categoryListService;
         this.userRepo = userRepo;
+        this.baseUrl = baseUrl;
         this.userCategoryListGeneric = new com.baranbatur.newMotherHelper.converter.GenericConverter<>(userCategoryList -> new UserCategoryListDto(userCategoryList.getId(), userCategoryList.getUser(), userCategoryList.getCategoryList()), userCategoryListDto -> {
             UserCategoryList userCategoryList = new UserCategoryList();
             userCategoryList.setId(userCategoryListDto.id());
@@ -47,7 +49,14 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
     @Override
     public List<UserCategoryListResponse> getUserCategoryList(Integer userId) {
         List<UserCategoryList> userCategoryLists = userCategoryListRepo.findByUserId(userId);
-        return userCategoryLists.stream().map(userCategoryList -> new UserCategoryListResponse(userCategoryList.getCategoryList().getCategory().getId(), userCategoryList.getCategoryList().getItemName(), userCategoryList.isAdded())).collect(Collectors.toList());
+        return userCategoryLists.stream().filter(UserCategoryList::isAdded).map(userCategoryList ->
+                        new UserCategoryListResponse(
+                                userCategoryList.getId(),
+                                userCategoryList.getCategoryList().getCategory().getId(),
+                                userCategoryList.getCategoryList().getCategory().getName(),
+                                userCategoryList.getCategoryList().getItemName(),
+                                this.baseUrl + userCategoryList.getCategoryList().getIconUrl()))
+                .collect(Collectors.toList());
     }
 
     public UserCategoryListResponse save(UserCategoryListRequest userCategoryListRequest, Integer userId) {
@@ -57,7 +66,7 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
         if (userCategoryListSearch != null) {
             userCategoryListSearch.setAdded(!userCategoryListSearch.isAdded());
             userCategoryListRepo.save(userCategoryListSearch);
-            return new UserCategoryListResponse(categoryList.category().getId(), categoryList.itemName(), userCategoryListSearch.isAdded());
+            return new UserCategoryListResponse(categoryList.id(), categoryList.category().getId(), categoryList.category().getName(), categoryList.itemName(), categoryList.iconUrl());
         }
         CategoryList categoryList1 = new CategoryList();
         categoryList1.setId(categoryList.id());
@@ -68,7 +77,7 @@ public class UserCategoryListServiceImpl implements IUserCategoryListService {
         userCategoryList.setCategoryList(categoryList1);
         userCategoryList.setAdded(true);
         userCategoryListRepo.save(userCategoryList);
-        return new UserCategoryListResponse(categoryList1.getCategory().getId(), categoryList1.getItemName(), true);
+        return new UserCategoryListResponse(categoryList1.getId(), categoryList1.getCategory().getId(), categoryList.category().getName(), categoryList1.getItemName(), categoryList.iconUrl());
     }
 
 
