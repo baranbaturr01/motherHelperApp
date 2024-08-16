@@ -29,7 +29,7 @@ public class CategoryListServiceImpl implements ICategoryListService {
     private final CategoryListRepo categoryListRepo;
     private final UserCategoryListRepo userCategoryListRepo;
     private final CategoryRepo categoryRepo;
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
 
     @Value("${base-url}")

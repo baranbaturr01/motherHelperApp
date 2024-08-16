@@ -39,7 +39,6 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.
                         requestMatchers("/api/v1/user/login").permitAll().
-                        requestMatchers("/static/**").permitAll().
                         requestMatchers("/images/**").permitAll().
                         requestMatchers("/api/v1/user/register").permitAll().
                         requestMatchers("/api/v1/**").authenticated()
@@ -48,14 +47,13 @@ public class SecurityConfig {
                 .authenticationProvider(applicationConfiguration.authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8081"));
+        configuration.setAllowedOrigins(List.of("http://localhost:8082"));
         configuration.setAllowedMethods(List.of("GET", "POST"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 
