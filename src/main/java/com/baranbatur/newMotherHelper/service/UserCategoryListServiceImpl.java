@@ -1,4 +1,4 @@
-package com.baranbatur.newMotherHelper.service.concrete;
+package com.baranbatur.newMotherHelper.service;
 
 import com.baranbatur.newMotherHelper.converter.GenericConverter;
 import com.baranbatur.newMotherHelper.dto.CategoryListDto;
