@@ -1,5 +1,6 @@
 package com.baranbatur.newMotherHelper.interceptors;
 
+import com.baranbatur.newMotherHelper.model.User;
 import com.baranbatur.newMotherHelper.service.abstracts.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         String token = header.substring(7);
         Integer userId = userService.getUserIdFromToken(token);
         request.setAttribute("userId", userId);
+        User user = userService.getUserById(userId);
+        request.setAttribute("user", user);
         return true;
 
     }

@@ -101,4 +101,9 @@ public class UserServiceImpl implements IUserService {
 
         return user.getId();
     }
+
+    @Override
+    public User getUserById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }
