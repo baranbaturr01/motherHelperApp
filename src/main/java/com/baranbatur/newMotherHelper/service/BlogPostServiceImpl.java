@@ -3,9 +3,11 @@ package com.baranbatur.newMotherHelper.service;
 import com.baranbatur.newMotherHelper.converter.GenericConverter;
 import com.baranbatur.newMotherHelper.dto.requests.BlogPostRequest;
 import com.baranbatur.newMotherHelper.dto.response.BlogPostResponse;
+import com.baranbatur.newMotherHelper.dto.response.CommentResponse;
 import com.baranbatur.newMotherHelper.dto.response.UserResponse;
 import com.baranbatur.newMotherHelper.exception.NotFoundException;
 import com.baranbatur.newMotherHelper.model.BlogPost;
+import com.baranbatur.newMotherHelper.model.Comment;
 import com.baranbatur.newMotherHelper.model.User;
 import com.baranbatur.newMotherHelper.model.Vote;
 import com.baranbatur.newMotherHelper.repository.BlogPostRepo;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogPostServiceImpl implements BlogPostService {
@@ -27,6 +30,8 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     private final GenericConverter<BlogPost, BlogPostRequest> blogPostRequestGenericConverter;
     private final GenericConverter<BlogPost, BlogPostResponse> blogPostResponseGenericConverter;
+    private GenericConverter<Comment, CommentResponse> commentResponseConverter = null;
+
 
     public BlogPostServiceImpl(BlogPostRepo blogPostRepo, VoteRepo voteRepo) {
         this.blogPostRepo = blogPostRepo;
@@ -41,7 +46,7 @@ public class BlogPostServiceImpl implements BlogPostService {
             return blogPost;
         });
 
-        this.blogPostResponseGenericConverter = new GenericConverter<BlogPost, BlogPostResponse>(blogPost -> {
+        this.blogPostResponseGenericConverter = new GenericConverter<>(blogPost -> {
             BlogPostResponse response = new BlogPostResponse();
             response.setId(blogPost.getId());
             response.setTitle(blogPost.getTitle());
@@ -59,6 +64,11 @@ public class BlogPostServiceImpl implements BlogPostService {
                 userResponse.setRole(blogPost.getUser().getRole().name());
             }
             response.setUser(userResponse);
+            List<CommentResponse> commentResponses = blogPost.getComments()
+                    .stream()
+                    .map(commentResponseConverter::convertToDto)
+                    .collect(Collectors.toList());
+            response.setComments(commentResponses);
             return response;
         }, blogPostResponse -> {
             BlogPost blogPost = new BlogPost();
@@ -73,7 +83,31 @@ public class BlogPostServiceImpl implements BlogPostService {
             blogPost.setUser(user);
             return blogPost;
         });
+        this.commentResponseConverter = new GenericConverter<>(
+                comment -> {
+                    CommentResponse response = new CommentResponse();
+                    response.setId(comment.getId());
+                    response.setContent(comment.getContent());
+                    response.setCreatedAt(comment.getCreatedAt());
+                    response.setUpdatedAt(comment.getUpdatedAt());
 
+                    UserResponse userResponse = new UserResponse();
+                    User user = comment.getUser();
+                    if (user != null) {
+                        userResponse.setId(user.getId());
+                        userResponse.setName(user.getName());
+                        userResponse.setSurname(user.getSurname());
+                        userResponse.setEmail(user.getEmail());
+                        userResponse.setGender(user.getGender().name());
+                        userResponse.setRole(user.getRole().name());
+                    }
+                    response.setUser(userResponse);
+                    return response;
+                },
+                commentResponse -> {
+                    // Implement if needed
+                    return null;
+                });
     }
 
     @Override
