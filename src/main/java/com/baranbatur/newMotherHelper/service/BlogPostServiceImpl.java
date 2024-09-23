@@ -52,6 +52,7 @@ public class BlogPostServiceImpl implements BlogPostService {
             response.setTitle(blogPost.getTitle());
             response.setContent(blogPost.getContent());
             response.setVoteCount(blogPost.getVoteCount());
+            response.setCommentCount(blogPost.getComments().size());
             response.setCreatedAt(blogPost.getCreatedAt());
             response.setUpdatedAt(blogPost.getUpdatedAt());
             UserResponse userResponse = new UserResponse();

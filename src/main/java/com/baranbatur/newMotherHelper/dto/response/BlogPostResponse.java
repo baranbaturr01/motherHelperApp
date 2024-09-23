@@ -12,20 +12,30 @@ public class BlogPostResponse {
     private String title;
     private String content;
     private int voteCount;
+    private int commentCount;
     private List<CommentResponse> comments;
     private Timestamp createdAt;
     private UserResponse user;
     private Timestamp updatedAt;
 
-    public BlogPostResponse(Integer id, String title, String content, int voteCount, List<CommentResponse> comments, Timestamp createdAt, UserResponse user, Timestamp updatedAt) {
+    public BlogPostResponse(Integer id, String title, String content, int voteCount, List<CommentResponse> comments, Timestamp createdAt, UserResponse user, Timestamp updatedAt, int commentCount) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.voteCount = voteCount;
         this.createdAt = createdAt;
         this.user = user;
+        this.commentCount = commentCount;
         this.comments = comments;
         this.updatedAt = updatedAt;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     public BlogPostResponse() {
