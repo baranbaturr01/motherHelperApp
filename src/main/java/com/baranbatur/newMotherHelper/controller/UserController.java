@@ -7,6 +7,7 @@ import com.baranbatur.newMotherHelper.dto.response.RegisterResponse;
 import com.baranbatur.newMotherHelper.helper.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -22,5 +23,10 @@ public interface UserController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<RegisterResponse> create(RegisterRequest request);
+
+
+    @PostMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<Void> delete(@RequestAttribute("userId") Integer userId);
 
 }

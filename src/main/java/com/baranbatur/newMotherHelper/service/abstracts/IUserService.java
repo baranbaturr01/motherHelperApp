@@ -16,4 +16,6 @@ public interface IUserService {
 
     User getUserById(Integer id);
 
+    Boolean deleteUser(Integer userId);
+
 }

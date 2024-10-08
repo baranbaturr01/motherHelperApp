@@ -106,4 +106,11 @@ public class UserServiceImpl implements IUserService {
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    @Override
+    public Boolean deleteUser(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
+        return true;
+    }
 }

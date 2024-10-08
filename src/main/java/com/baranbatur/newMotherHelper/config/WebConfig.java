@@ -19,5 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
         register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/category-list/find-by-category-id");
         register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/blog-posts/*");
         register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/comments/*");
+        register.addInterceptor(jwtInterceptor).addPathPatterns("/api/v1/user/delete");
     }
 }

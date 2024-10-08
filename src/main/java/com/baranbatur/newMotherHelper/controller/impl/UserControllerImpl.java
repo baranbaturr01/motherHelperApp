@@ -25,4 +25,13 @@ public class UserControllerImpl implements com.baranbatur.newMotherHelper.contro
     public ApiResponse<RegisterResponse> create(@RequestBody RegisterRequest request) {
         return new ApiResponse<>(true, userService.register(request));
     }
+
+    @Override
+    public ApiResponse<Void> delete(Integer userId) {
+        boolean isDeleted = userService.deleteUser(userId);
+        if (!isDeleted) {
+            return new ApiResponse<>(false, null);
+        }
+        return new ApiResponse<>(true, null);
+    }
 }
