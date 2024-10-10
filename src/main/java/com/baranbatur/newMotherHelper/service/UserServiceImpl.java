@@ -40,6 +40,7 @@ public class UserServiceImpl implements IUserService {
             User user = new User();
             user.setEmail(request.email());
             user.setPassword(request.password());
+            user.setRole(role);
             return user;
         });
         this.loginResponseConverter = new GenericConverter<>(user -> new LoginResponse(null), response -> {
@@ -54,7 +55,7 @@ public class UserServiceImpl implements IUserService {
             user.setPassword(request.getPassword());
             user.setEmail(request.getEmail());
             user.setGender(request.getGender());
-            user.setRole(request.getRole());
+            user.setRole(role);
             return user;
         });
         this.registerResponseConverter = new GenericConverter<>(user -> new RegisterResponse(user.getName(), user.getSurname(), user.getEmail(), user.getGender(), null), response -> {
@@ -86,6 +87,7 @@ public class UserServiceImpl implements IUserService {
     public RegisterResponse register(RegisterRequest registerRequest) {
         User user = registerRequestConverter.convertToEntity(registerRequest);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRole(role);
         user = userRepository.save(user);
         var token = jwtService.generateToken(user);
         RegisterResponse response = registerResponseConverter.convertToDto(user);
@@ -96,8 +98,7 @@ public class UserServiceImpl implements IUserService {
     public Integer getUserIdFromToken(String token) {
         String email = jwtService.extractUsername(token);
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return user.getId();
     }
